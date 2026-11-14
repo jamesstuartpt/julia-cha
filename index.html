@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Júlia — Baby Shower</title>
+  <meta name="description" content="Baby shower da Júlia. Escolhe e reserva o presente que gostarias de nos oferecer.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..600&family=Inter:wght@300..600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="hero">
+    <div class="hero__glow" aria-hidden="true"></div>
+    <div class="wrap hero__inner">
+      <p class="eyebrow">Baby shower</p>
+      <h1 class="hero__title" id="nomeBebe">Júlia</h1>
+      <p class="hero__sub" id="heroSub">Estamos à espera da nossa menina.</p>
+
+      <div class="countdown" id="countdown" aria-live="polite"></div>
+
+      <div class="hero__meta" id="heroMeta"></div>
+
+      <div class="actions">
+        <a class="btn btn--primary" href="#presentes">Ver a lista de presentes</a>
+        <a class="btn btn--outline" href="https://maps.app.goo.gl/3CpFiRyEZaGjZr1W9"
+           target="_blank" rel="noopener">Ver o mapa do local</a>
+        <button class="btn btn--outline" id="btnAbrirPresenca" type="button">Confirmar presença</button>
+        <button class="btn btn--outline" id="btnAbrirSugestao" type="button">Oferecer outra coisa</button>
+        <a class="btn btn--outline" id="btnWhatsapp" target="_blank" rel="noopener">Falar connosco por WhatsApp</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="section">
+      <div class="wrap">
+        <h2 class="section__title">O nosso baby shower</h2>
+        <p class="prose" id="textoIntro"></p>
+        <figure class="babyshower__photo">
+          <img src="imagens/ecografia.jpg" alt="Ecografia da Júlia" loading="lazy">
+        </figure>
+        <p class="prose prose--muted" id="textoPais"></p>
+      </div>
+    </section>
+
+    <section class="section section--alt" id="presentes">
+      <div class="wrap">
+        <h2 class="section__title">Lista de presentes</h2>
+        <p class="section__lead">Escolhe um presente e reserva-o. Assim ninguém traz o mesmo.</p>
+
+        <div class="filters" id="filters" role="tablist" aria-label="Categorias de presentes"></div>
+        <div class="grid" id="grid" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <h2 class="section__title">Como funciona</h2>
+        <ol class="steps">
+          <li class="steps__item">
+            <span class="steps__num">1</span>
+            <p>Vê a lista e escolhe o presente que gostarias de oferecer à Júlia.</p>
+          </li>
+          <li class="steps__item">
+            <span class="steps__num">2</span>
+            <p>Clica em <strong>Reservar</strong> e deixa o teu nome. Podes juntar uma mensagem. O teu nome não aparece no site — só nós é que o vemos.</p>
+          </li>
+          <li class="steps__item">
+            <span class="steps__num">3</span>
+            <p>O presente fica marcado como reservado e desaparece da lista. Traz o presente no dia do baby shower.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="wrap center">
+      <p class="footer__heart" id="footerAgradecimento"></p>
+    </div>
+  </footer>
+
+  <div class="modal" id="modal" hidden>
+    <div class="modal__backdrop" data-fechar></div>
+    <div class="modal__box" role="dialog" aria-modal="true" aria-labelledby="modalTitulo">
+      <button class="modal__close" data-fechar aria-label="Fechar">&times;</button>
+      <h3 class="modal__title" id="modalTitulo">Reservar presente</h3>
+      <p class="modal__gift" id="modalPresente"></p>
+
+      <form class="form" id="formReserva" novalidate>
+        <label class="form__label" for="campoNome">De:</label>
+        <input class="form__input" id="campoNome" name="nome" type="text" maxlength="40"
+               autocomplete="name" placeholder="Ex: Ana e família" required>
+
+        <label class="form__label" for="campoMensagem">
+          Mensagem para a Júlia: <span class="form__opt">(opcional)</span>
+        </label>
+        <textarea class="form__input" id="campoMensagem" name="mensagem" rows="3" maxlength="200"
+                  placeholder="Um desejo, um conselho, um miminho..."></textarea>
+
+        <p class="form__nota">O teu nome não é exibido no site. Só nós é que o vemos; os outros convidados não veem quem reservou.</p>
+
+        <button class="btn btn--primary btn--full" id="btnConfirmar" type="submit">Confirmar reserva</button>
+        <p class="form__error" id="formErro" role="alert"></p>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="modalSugestao" hidden>
+    <div class="modal__backdrop" data-fechar-sugestao></div>
+    <div class="modal__box" role="dialog" aria-modal="true" aria-labelledby="tituloModalSugestao">
+      <button class="modal__close" data-fechar-sugestao aria-label="Fechar">&times;</button>
+      <h3 class="modal__title" id="tituloModalSugestao">Queres oferecer outra coisa?</h3>
+      <p class="modal__gift">Escreve a tua sugestão se não a encontrares na lista. Só nós a conseguimos ver.</p>
+
+      <form class="form" id="formSugestao" novalidate>
+        <label class="form__label" for="sugestaoPresente">O que gostarias de oferecer?</label>
+        <textarea class="form__input" id="sugestaoPresente" name="sugestao" rows="3" maxlength="300"
+                  placeholder="Escreve aqui a tua sugestão"></textarea>
+        <label class="form__label" for="sugestaoNome">O teu nome <span class="form__opt">(opcional)</span></label>
+        <input class="form__input" id="sugestaoNome" name="nome" type="text" maxlength="80"
+               autocomplete="name" placeholder="Ex: Ana e família">
+        <button class="btn btn--primary btn--full" id="btnSugestao" type="submit">Enviar sugestão</button>
+        <p class="form__error" id="sugestaoErro" role="alert"></p>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="modalPresenca" hidden>
+    <div class="modal__backdrop" data-fechar-presenca></div>
+    <div class="modal__box" role="dialog" aria-modal="true" aria-labelledby="tituloModalPresenca">
+      <button class="modal__close" data-fechar-presenca aria-label="Fechar">&times;</button>
+      <h3 class="modal__title" id="tituloModalPresenca">Vens ao baby shower?</h3>
+      <p class="modal__gift" id="textoRsvp"></p>
+
+      <form class="form" id="formPresenca" novalidate>
+        <label class="form__label" for="campoNomes">
+          Nome ou nomes de quem vai: <span class="form__opt">(podes escrever vários)</span>
+        </label>
+        <textarea class="form__input" id="campoNomes" name="nomes" rows="3" maxlength="300"
+                  placeholder="Ex: Ana Silva, João Silva e o Miguel (2 anos)"></textarea>
+        <button class="btn btn--primary btn--full" id="btnPresenca" type="submit">Confirmar presença</button>
+        <p class="form__error" id="presencaErro" role="alert"></p>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

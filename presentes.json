@@ -1,0 +1,284 @@
+{
+  "config": {
+    "nomeBebe": "Júlia",
+    "nomePais": "Os pais da Júlia",
+    "dataCha": "2026-12-12 - Sábado",
+    "horaCha": "15h00",
+    "localCha": "O Sítio das Festas - Travessa das Prioras, 2 A-B, Sacavém",
+    "dataParto": "2027-03-03",
+    "whatsapp": "351929060158",
+    "mensagemWhatsapp": "Olá! Estou a ver o site do baby shower da Júlia e queria falar convosco.",
+    "textoIntro": "Estamos a preparar a chegada da Júlia e gostaríamos muito de te ter por perto. Abaixo está a lista de coisas que nos vão ajudar nestes primeiros meses. Escolhe o que te apetecer — cada presente, grande ou pequeno, tem muito significado para nós.",
+    "textoRsvp": "Confirma-nos a tua presença e diz-nos quem vem contigo. Se tiveres alguma dúvida sobre a lista, fala connosco.",
+    "agradecimento": "Obrigado por fazeres parte da chegada da Júlia."
+  },
+  "presentes": [
+    {
+      "id": "fraldas-dodot",
+      "nome": "Fraldas Dodot Sensitive",
+      "categoria": "Fraldas",
+      "descricao": "Vários tamanhos (T0 a T3).",
+      "preco": "5,35 € / pacote",
+      "link": "https://www.continente.pt/produto/fraldas-sensitive-t0-%3C3kg-dodot-6900182.html",
+      "emoji": "🍼"
+    },
+    {
+      "id": "resguardos",
+      "nome": "Resguardos Descartáveis Bebé 60x40 cm",
+      "categoria": "Higiene",
+      "descricao": "Baby Wells, 15 unidades. Para a muda da fralda.",
+      "quantidade": 3,
+      "preco": "2,97 €",
+      "link": "https://wells.pt/resguardos-descartaveis-bebe-60x40-cm-7418099.html",
+      "emoji": "🧴"
+    },
+    {
+      "id": "compressas",
+      "nome": "Compressas Bebé Tecido Não Tecido",
+      "categoria": "Higiene",
+      "descricao": "Baby Wells, 200 unidades de 10x10 cm. Suaves e absorventes.",
+      "quantidade": 3,
+      "preco": "2,99 €",
+      "link": "https://wells.pt/compressas-bebe-tecido-nao-tecido-7422974.html",
+      "emoji": "🧴"
+    },
+    {
+      "id": "contentor-fraldas",
+      "nome": "Contentor para Fraldas Winter Cloud",
+      "categoria": "Higiene",
+      "descricao": "Chicco, 1 unidade. Selos que impedem a fuga de maus odores.",
+      "quantidade": 1,
+      "preco": "47,99 €",
+      "link": "https://wells.pt/contentor-para-fraldas-winter-cloud-8200166.html",
+      "emoji": "🗑️"
+    },
+    {
+      "id": "pomada-muda",
+      "nome": "Pack Pomada para a Muda da Fralda Baby",
+      "categoria": "Higiene",
+      "descricao": "Bepanthen. Proteção e regeneração diária da pele do rabinho.",
+      "quantidade": 2,
+      "preco": "14,20 €",
+      "link": "https://wells.pt/pack-pomada-para-a-muda-da-fralda-baby-7995053.html",
+      "emoji": "🧴"
+    },
+    {
+      "id": "creme-muda",
+      "nome": "Primeiro Creme para a Muda da Fralda Bebé",
+      "categoria": "Higiene",
+      "descricao": "1 unidade.",
+      "quantidade": 1,
+      "link": "https://wells.pt/primeiro-creme-muda-da-fralda-bebe-5257000.html",
+      "emoji": "🧴"
+    },
+    {
+      "id": "toalhitas-pack",
+      "nome": "Pack Toalhitas Bebé Aqua Pure 0% Plástico",
+      "categoria": "Higiene",
+      "descricao": "Dodot, 6 x 48 unidades. 99% água, com algodão premium.",
+      "quantidade": 2,
+      "preco": "11,43 €",
+      "link": "https://wells.pt/pack-toalhitas-bebe-aqua-pure-0-plastico-7757308.html",
+      "emoji": "🧴"
+    },
+    {
+      "id": "banheira",
+      "nome": "Bath & Changing Kit Mocha",
+      "categoria": "Banho",
+      "descricao": "Cor: Mocha",
+      "quantidade": 1,
+      "preco": "164,99 €",
+      "link": "https://twistshake.com/eu/p/luxury-changing-mat-mocha",
+      "emoji": "🛁"
+    },
+    {
+      "id": "necessaire",
+      "nome": "Nécessaire de Bebé 11 Peças",
+      "categoria": "Banho",
+      "descricao": "Nécessaire de Bebé 11 Peças - Curl White",
+      "quantidade": 1,
+      "preco": "49,99 €",
+      "link": "https://www.elcorteingles.pt/puericultura/A200292117-necessaire-de-bebe-11-pecas-curl-white/",
+      "emoji": "🛁"
+    },
+    {
+      "id": "cleansing-water",
+      "nome": "Pack Cleansing Water Baby",
+      "categoria": "Banho",
+      "descricao": "Uriage, 500 ml x 2. Água de limpeza sem enxaguamento.",
+      "quantidade": 1,
+      "preco": "14,22 €",
+      "link": "https://wells.pt/pack-cleansing-water-baby-8404700.html",
+      "emoji": "🧴"
+    },
+    {
+      "id": "primeiro-champo",
+      "nome": "Primeiro Champô Bebé",
+      "categoria": "Banho",
+      "descricao": "Uriage, 200 ml. Limpeza extra suave do couro cabeludo.",
+      "quantidade": 1,
+      "preco": "9,09 €",
+      "link": "https://wells.pt/primeiro-champo-bebe-4963658.html",
+      "emoji": "🧴"
+    },
+    {
+      "id": "creme-lavante",
+      "nome": "Primeiro Creme Lavante Bebé",
+      "categoria": "Banho",
+      "descricao": "Uriage, 1000 ml. Limpa e nutre num só gesto.",
+      "quantidade": 1,
+      "preco": "16,07 €",
+      "link": "https://wells.pt/primeiro-creme-lavante-bebe-4469389.html",
+      "emoji": "🛁"
+    },
+    {
+      "id": "agua-micelar",
+      "nome": "Água Micelar Bio",
+      "categoria": "Banho",
+      "descricao": "Mustela, 400 ml. 99% de origem natural, sem enxaguamento.",
+      "quantidade": 1,
+      "preco": "11,62 €",
+      "link": "https://wells.pt/agua-micelar-bio-7267540.html",
+      "emoji": "🧴"
+    },
+    {
+      "id": "toalha-capuz",
+      "nome": "Toalha de Banho com Capuz Meyco 80x80 cm",
+      "categoria": "Banho",
+      "descricao": "Zippy, 100% algodão, cor Terry Sand.",
+      "quantidade": 1,
+      "preco": "19,99 €",
+      "link": "https://zippyonline.com/pt/products/toalha-de-banho-com-capuz-meyco-80x80-cm-terry-sand",
+      "emoji": "🛁"
+    },
+    {
+      "id": "capa-banho",
+      "nome": "Capa de Casa de Banho Básica Lisa",
+      "categoria": "Banho",
+      "descricao": "Cotton Juice, 100x100 cm, 100% algodão. Cor: rosa-claro.",
+      "quantidade": 1,
+      "preco": "16,99 €",
+      "link": "https://www.elcorteingles.pt/puericultura/A51966165-capa-de-casa-de-banho-basica-lisa/",
+      "emoji": "🛁"
+    },
+    {
+      "id": "babynest",
+      "nome": "Baby nest",
+      "categoria": "Quarto",
+      "descricao": "Cor: Winter Commelina",
+      "quantidade": 1,
+      "preco": "37,95 €",
+      "link": "https://molisandco.com/en/products/nido-para-bebe-winter-commelina",
+      "emoji": "🛏️"
+    },
+    {
+      "id": "berco",
+      "nome": "Chicco Next2Me",
+      "categoria": "Quarto",
+      "descricao": "Berço Co-Sleeping Chicco Next2Me Magic Evo Desert Taupe",
+      "quantidade": 1,
+      "preco": "199,95 €",
+      "link": "https://www.babycool.com/products/chicco-berco-cosleep-next2me-magic-des-taupe?variant=44608718668063&country=PT&currency=EUR&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&utm_source=google&utm_medium=cpc&utm_campaign=0524-p-sale-pm&gad_source=1&gad_campaignid=21337932214&gbraid=0AAAAADC8CrpK_Rz8vW9XNg-_cCP1huK2E&gclid=CjwKCAiAquDXBhApEiwAoyNqBLPmsPbfFimaovtUSW9tSKGH6VkCvPtDxcdp23QRnWa8APSX6m-jzxoCGkEQAvD_BwE",
+      "emoji": "🛏️"
+    },
+    {
+      "id": "saco-dormir",
+      "nome": "Saco de dormir 0–6 meses",
+      "categoria": "Quarto",
+      "descricao": "Cor: Winter Commelina",
+      "quantidade": 1,
+      "preco": "36,95 €",
+      "link": "https://molisandco.com/en/products/saco-de-dormir-bebe-con-mangas-winter-commelina-tog-2-5",
+      "emoji": "🌙"
+    },
+    {
+      "id": "manta-bebe-ondas",
+      "nome": "Manta de Bebé Ondas",
+      "categoria": "Quarto",
+      "descricao": "Zara Home, 1 unidade.",
+      "quantidade": 1,
+      "link": "https://www.zarahome.com/pt/manta-bebe-ondas-l44624004",
+      "emoji": "🛏️"
+    },
+    {
+      "id": "lencois-chicco",
+      "nome": "Conjunto lençóis Chicco Next2Me",
+      "categoria": "Quarto",
+      "descricao": "Lençol de cima e de baixo, viscose de bambu. 50x83 cm.",
+      "quantidade": 1,
+      "preco": "36,99 €",
+      "link": "https://www.chicco.pt/produtos/dormir-e-relaxar/hora-de-dormir/conjuntos-de-cama/conjunto-lenc%C3%B3is-chicco-next2me-8051700581278-09101121350990.html",
+      "emoji": "🛏️"
+    },
+    {
+      "id": "fralda-musselina",
+      "nome": "Fralda Musselina 0m+",
+      "categoria": "Quarto",
+      "descricao": "Baby Wells, pack de 2. Algodão 100%, 55x55 cm. Feita em Portugal.",
+      "quantidade": 3,
+      "preco": "8,49 €",
+      "link": "https://wells.pt/fralda-musselina-0m-8620139.html",
+      "emoji": "🌙"
+    },
+    {
+      "id": "camera",
+      "nome": "Blemil Câmara de vigilância para bebé",
+      "categoria": "Quarto",
+      "descricao": "6-Inch - 1 Cam",
+      "quantidade": 1,
+      "preco": "71,14 €",
+      "link": "https://www.amazon.es/dp/B0DG2QS4GG/ref=sspa_dk_detail_0?pd_rd_i=B0BZYJWCMS&pd_rd_w=OlmDh&content-id=amzn1.sym.1a1cf43a-d009-48e1-8554-8b895fd31e09&pf_rd_p=1a1cf43a-d009-48e1-8554-8b895fd31e09&pf_rd_r=1X85R95BK158TRW2TCRZ&pd_rd_wg=j7Czz&pd_rd_r=dceebeec-d1a6-45b0-9de4-e4c288825d09&aref=7GlcoW4Ygq&sp_csd=d2lkZ2V0TmFtZT1zcF9kZXRhaWw&th=1",
+      "emoji": "🎵"
+    },
+    {
+      "id": "som-bebe",
+      "nome": "Máquina de Som para Bebés",
+      "categoria": "Quarto",
+      "descricao": "Máquina de Som para Bebês MOMCOZY Máquina de Ruído Branco para Bebês Dormindo com Controle Remoto de Aplicativo",
+      "quantidade": 1,
+      "preco": "38,69 €",
+      "link": "https://www.worten.pt/produtos/maquina-de-som-para-bebes-momcozy-maquina-de-ruido-branco-para-bebes-dormindo-com-controle-remoto-de-aplicativo-mrkean-0741157984453",
+      "emoji": "🎵"
+    },
+    {
+      "id": "sterilizer",
+      "nome": "Philips Avent 2-in-1 Warmer & Sterilizer",
+      "categoria": "Amamentação",
+      "descricao": "2-in-1",
+      "quantidade": 1,
+      "preco": "62,99 €",
+      "link": "https://www.philips.pt/c-p/SCF359_00/2-in-1-warmer-sterilizer-premium",
+      "emoji": "🍼"
+    },
+     {
+      "id": "biberoes",
+      "nome": "Biberões e Escova",
+      "categoria": "Amamentação",
+      "descricao": "Conjunto Primeiros Começos Natural Response 3 Biberões e Escova",
+      "quantidade": 1,
+      "preco": "45,99 €",
+      "link": "https://www.elcorteingles.pt/puericultura/A49095114-conjunto-primeiros-comecos-natural-response-3-biberoes-e-escova/",
+      "emoji": "🍼"
+    },
+    {
+      "id": "almofada-amamentacao",
+      "nome": "Almofada de Amamentação",
+      "categoria": "Amamentação",
+      "descricao": "Baby Wells, 50x50 cm. Capa em algodão com elastano.",
+      "quantidade": 1,
+      "preco": "24,99 €",
+      "link": "https://wells.pt/almofada-amamentacao-7752883.html",
+      "emoji": "🤱"
+    },
+    {
+      "id": "marsupio",
+      "nome": "Marsúpio Mini 3D - BabyBjorn",
+      "categoria": "Passeio",
+      "descricao": "",
+      "quantidade": 1,
+      "preco": "119.99 €",
+      "link": "https://www.elcorteingles.pt/puericultura/A41361297-marsupio-mini-3d-mesh-2-posicoes/?color=Bege",
+      "emoji": "🤱"
+    }
+  ]
+}
