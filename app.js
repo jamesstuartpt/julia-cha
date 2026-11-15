@@ -61,10 +61,14 @@
       return;
     }
 
-    // Lê a vista pública: devolve apenas que presentes estão reservados,
-    // nunca os nomes de quem reservou.
-    const url = CFG.url + "/rest/v1/reservas_publicas?select=presente_id";
-    const resposta = await fetch(url, { headers: cabecalhos(), cache: "no-store" });
+    // Lê a lista de presentes reservados através de uma função RPC.
+    // A função é "security definer", por isso contorna o RLS e devolve
+    // apenas os presente_id (nunca os nomes de quem reservou).
+    const resposta = await fetch(CFG.url + "/rest/v1/rpc/get_reservas_publicas", {
+      method: "POST",
+      headers: cabecalhos(),
+      cache: "no-store"
+    });
     if (!resposta.ok) throw new Error("Não foi possível carregar as reservas.");
 
     const linhas = await resposta.json();

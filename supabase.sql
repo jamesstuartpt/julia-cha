@@ -78,15 +78,35 @@ alter table public.reservas
 -- do grupo), mas o público só precisa de saber se está reservado ou não.
 --
 -- security_invoker = false: a vista corre com as permissões do DONO da
--- vista (postgres), contornando o RLS da tabela "reservas". Isto é
--- essencial: se ficar security_invoker = true, a vista corre com as
--- permissões do anon (que não tem policy de SELECT) e devolve vazio.
+-- vista (postgres), contornando o RLS da tabela "reservas".
 -- ------------------------------------------------------------------
 drop view if exists public.reservas_publicas;
 create view public.reservas_publicas with (security_invoker = false) as
   select distinct presente_id from public.reservas;
 
 grant select on public.reservas_publicas to anon, authenticated;
+
+
+-- ------------------------------------------------------------------
+-- Função pública de reserva: devolve a lista de presentes reservados.
+--
+-- security definer: a função corre com as permissões do dono da tabela,
+-- por isso consegue ler a tabela "reservas" mesmo que o anon não tenha
+-- policy de SELECT. Esta é a forma mais fiável de contornar o RLS.
+-- O site usa esta função (via RPC) em vez da vista, para garantir que
+-- os presentes aparecem como "Reservado" após um refresh.
+-- ------------------------------------------------------------------
+create or replace function public.get_reservas_publicas()
+returns table (presente_id text)
+language sql
+security definer
+set search_path = public
+as $$
+  select distinct r.presente_id from public.reservas r;
+$$;
+
+revoke all on function public.get_reservas_publicas() from public;
+grant execute on function public.get_reservas_publicas() to anon, authenticated;
 
 
 -- ------------------------------------------------------------------
