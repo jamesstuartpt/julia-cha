@@ -68,6 +68,7 @@
       "categoria": "Higiene",
       "descricao": "1 unidade.",
       "quantidade": 1,
+      "preco": "9,59 €",
       "link": "https://wells.pt/primeiro-creme-muda-da-fralda-bebe-5257000.html",
       "emoji": "🧴"
     },
@@ -85,9 +86,9 @@
       "id": "cadeira-alimentacao",
       "nome": "Cadeira de Alimentação 2 em 1 LIONELO Beny",
       "categoria": "Alimentação",
-      "descricao": "Kiabi. Dos 6 aos 36 meses. Ajustável e conversível.",
+      "descricao": "Cor: verde. Kiabi Dos 6 aos 36 meses. Ajustável e conversível.",
       "quantidade": 1,
-      "preco": "49,99 €",
+      "preco": "74,99 €",
       "link": "https://www.kiabi.pt/cadeira-de-alimentacao-2-em-1-lionelo-beny-6-a-36-meses-ajustavel-conversivel-verde_P1165329C1165332",
       "emoji": "🪑"
     },
@@ -197,6 +198,7 @@
       "categoria": "Quarto",
       "descricao": "Zara Home, 1 unidade.",
       "quantidade": 1,
+      "preco": "19,99 €",
       "link": "https://www.zarahome.com/pt/manta-bebe-ondas-l44624004",
       "emoji": "🛏️"
     },

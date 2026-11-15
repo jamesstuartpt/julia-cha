@@ -467,7 +467,18 @@ img { max-width: 100%; display: block; }
 
 .modal__title { font-size: 1.4rem; }
 
-.modal__gift { margin: 6px 0 20px; color: var(--muted); font-size: .92rem; }
+.modal__gift { margin: 6px 0 6px; color: var(--muted); font-size: .92rem; }
+
+.modal__loja {
+  margin: 0 0 20px;
+  padding: 10px 14px;
+  background: var(--lav-50);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--ink);
+  font-size: .88rem;
+  line-height: 1.45;
+}
 
 /* ---------------- Formulário ---------------- */
 
