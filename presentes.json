@@ -84,7 +84,7 @@
     {
       "id": "cadeira-alimentacao",
       "nome": "Cadeira de Alimentação 2 em 1 LIONELO Beny",
-      "categoria": "Quarto",
+      "categoria": "Alimentação",
       "descricao": "Kiabi. Dos 6 aos 36 meses. Ajustável e conversível.",
       "quantidade": 1,
       "preco": "49,99 €",
@@ -171,6 +171,16 @@
       "link": "https://molisandco.com/en/products/nido-para-bebe-winter-commelina",
       "emoji": "🛏️"
     },
+     {
+      "id": "saco-dormir",
+      "nome": "Saco de dormir 0–6 meses",
+      "categoria": "Quarto",
+      "descricao": "Cor: Winter Commelina",
+      "quantidade": 1,
+      "preco": "36,95 €",
+      "link": "https://molisandco.com/en/products/saco-de-dormir-bebe-con-mangas-winter-commelina-tog-2-5",
+      "emoji": "🌙"
+    },
     {
       "id": "berco",
       "nome": "Chicco Next2Me",
@@ -180,16 +190,6 @@
       "preco": "199,95 €",
       "link": "https://www.babycool.com/products/chicco-berco-cosleep-next2me-magic-des-taupe?variant=44608718668063&country=PT&currency=EUR&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&utm_source=google&utm_medium=cpc&utm_campaign=0524-p-sale-pm&gad_source=1&gad_campaignid=21337932214&gbraid=0AAAAADC8CrpK_Rz8vW9XNg-_cCP1huK2E&gclid=CjwKCAiAquDXBhApEiwAoyNqBLPmsPbfFimaovtUSW9tSKGH6VkCvPtDxcdp23QRnWa8APSX6m-jzxoCGkEQAvD_BwE",
       "emoji": "🛏️"
-    },
-    {
-      "id": "saco-dormir",
-      "nome": "Saco de dormir 0–6 meses",
-      "categoria": "Quarto",
-      "descricao": "Cor: Winter Commelina",
-      "quantidade": 1,
-      "preco": "36,95 €",
-      "link": "https://molisandco.com/en/products/saco-de-dormir-bebe-con-mangas-winter-commelina-tog-2-5",
-      "emoji": "🌙"
     },
     {
       "id": "manta-bebe-ondas",
@@ -243,7 +243,7 @@
     {
       "id": "sterilizer",
       "nome": "Philips Avent 2-in-1 Warmer & Sterilizer",
-      "categoria": "Amamentação",
+      "categoria": "Alimentação",
       "descricao": "2-in-1",
       "quantidade": 1,
       "preco": "62,99 €",
@@ -253,7 +253,7 @@
      {
       "id": "biberoes",
       "nome": "Biberões e Escova",
-      "categoria": "Amamentação",
+      "categoria": "Alimentação",
       "descricao": "Conjunto Primeiros Começos Natural Response 3 Biberões e Escova",
       "quantidade": 1,
       "preco": "45,99 €",
@@ -263,7 +263,7 @@
     {
       "id": "almofada-amamentacao",
       "nome": "Almofada de Amamentação",
-      "categoria": "Amamentação",
+      "categoria": "Alimentação",
       "descricao": "Baby Wells, 50x50 cm. Capa em algodão com elastano.",
       "quantidade": 1,
       "preco": "24,99 €",
