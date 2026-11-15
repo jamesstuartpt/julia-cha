@@ -12,22 +12,22 @@
 
 
 -- ------------------------------------------------------------------
--- Tabela de reservas: UMA LINHA POR PESSOA que participa na oferta
--- de um presente. Se um grupo de 4 pessoas reservar o mesmo presente,
--- são criadas 4 linhas (uma por pessoa), todas com o mesmo presente_id.
--- O nome do presente vem do ficheiro presentes.json (não se repete aqui).
+-- Tabela de reservas: UMA LINHA POR PRESENTE reservado.
+-- Todos os nomes das pessoas que participam na oferta ficam juntos
+-- no campo "nome" (ex: "Ana, João e Maria"). O nome do presente vem
+-- do ficheiro presentes.json (não se repete aqui).
 -- ------------------------------------------------------------------
 create table if not exists public.reservas (
   id           uuid primary key default gen_random_uuid(),
   presente_id  text not null,
-  nome         text not null check (char_length(trim(nome)) between 1 and 120),
+  nome         text not null check (char_length(trim(nome)) between 1 and 600),
   mensagem     text check (char_length(mensagem) <= 200),
   criado_em    timestamptz not null default now()
 );
 
--- NOTA: não existe índice único em presente_id. O presente pode aparecer
--- em várias linhas (uma por pessoa do grupo). A verificação de "já está
--- reservado" é feita pelo site antes de inserir.
+-- NOTA: a função RPC "reservar_presente" garante que cada presente só
+-- aparece numa linha. A verificação de "já está reservado" é feita
+-- dentro da própria função, com bloqueio (pg_advisory_xact_lock).
 
 
 -- ------------------------------------------------------------------
@@ -62,13 +62,14 @@ drop policy if exists "lista visivel para todos" on public.reservas;
 -- ------------------------------------------------------------------
 -- Migração: se já correrares uma versão anterior deste ficheiro,
 -- remove o índice único de presente_id e alarga o limite do nome
--- (antes 40 caracteres, agora 120). Seguro de correr várias vezes.
+-- (antes 120 caracteres, agora 600, para caber vários nomes na mesma
+-- linha). Seguro de correr várias vezes.
 -- ------------------------------------------------------------------
 drop index if exists public.reservas_presente_id_unico;
 alter table public.reservas drop constraint if exists reservas_nome_check;
 alter table public.reservas
   add constraint reservas_nome_check
-  check (char_length(trim(nome)) between 1 and 120);
+  check (char_length(trim(nome)) between 1 and 600);
 
 
 -- ------------------------------------------------------------------
@@ -170,15 +171,20 @@ create policy "qualquer convidado pode confirmar presenca"
 --   1. Bloqueia o presente com pg_advisory_xact_lock (baseado no id),
 --      para que outra reserva do mesmo presente tenha de esperar.
 --   2. Verifica se o presente já tem reservas. Se sim, devolve false.
---   3. Se não, insere uma linha por pessoa (um array de nomes) e
---      devolve true.
+--   3. Se não, insere UMA ÚNICA LINHA com todos os nomes juntos
+--      (ex: "Ana, João e Maria") e devolve true.
 --
 -- security definer: a função corre com as permissões do dono da tabela,
 -- por isso consegue inserir mesmo que o anon não tenha policy de INSERT.
 -- set search_path = public: evita ambiguidades de schema.
 -- ------------------------------------------------------------------
+
+-- Remove a versão antiga da função (que recebia um array de nomes e
+-- criava uma linha por pessoa), para não ficar duplicada.
+drop function if exists public.reservar_presente(text, text[], text);
+
 create or replace function public.reservar_presente(
-  p_presente_id text, p_nomes text[], p_mensagem text)
+  p_presente_id text, p_nome text, p_mensagem text)
 returns boolean
 language plpgsql
 security definer
@@ -190,13 +196,13 @@ begin
     return false;
   end if;
   insert into reservas (presente_id, nome, mensagem)
-  select p_presente_id, n, p_mensagem from unnest(p_nomes) as n;
+  values (p_presente_id, p_nome, p_mensagem);
   return true;
 end $$;
 
 -- Retira permissões de execução para o público e concede apenas ao anon.
-revoke all on function public.reservar_presente(text, text[], text) from public;
-grant execute on function public.reservar_presente(text, text[], text) to anon;
+revoke all on function public.reservar_presente(text, text, text) from public;
+grant execute on function public.reservar_presente(text, text, text) to anon;
 
 -- Remove a policy de INSERT direto na tabela, se por acaso existir de
 -- uma versão anterior deste ficheiro. A partir de agora só se reserva

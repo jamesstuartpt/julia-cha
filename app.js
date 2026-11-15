@@ -74,16 +74,17 @@
   }
 
   async function guardarReserva(presenteId, nome, mensagem) {
-    // Separa os nomes (ex: "Ana, João e Maria") para cada pessoa ficar
-    // numa linha própria no Supabase, igual às presenças.
-    const nomes = separarNomes(nome);
-    if (!nomes.length) {
+    // As reservas ficam numa única linha por presente, com todos os nomes
+    // juntos (ex: "Ana, João e Maria"). Ao contrário das presenças, aqui
+    // não precisamos de contar pessoas, por isso não separamos os nomes.
+    const nomeLimpo = nome.trim();
+    if (!nomeLimpo) {
       throw new Error("Escreve o teu nome, por favor.");
     }
 
     if (!ONLINE) {
       const locais = JSON.parse(localStorage.getItem(CHAVE_LOCAL) || "{}");
-      locais[presenteId] = { nomes: nomes, mensagem: mensagem };
+      locais[presenteId] = { nome: nomeLimpo, mensagem: mensagem };
       localStorage.setItem(CHAVE_LOCAL, JSON.stringify(locais));
       estado.reservas[presenteId] = true;
       return;
@@ -96,7 +97,7 @@
     const resposta = await fetch(CFG.url + "/rest/v1/rpc/reservar_presente", {
       method: "POST",
       headers: cabecalhos(),
-      body: JSON.stringify({ p_presente_id: presenteId, p_nomes: nomes, p_mensagem: mensagem || null })
+      body: JSON.stringify({ p_presente_id: presenteId, p_nome: nomeLimpo, p_mensagem: mensagem || null })
     });
     if (!resposta.ok) throw new Error("Não foi possível guardar a reserva. Tenta novamente.");
 
