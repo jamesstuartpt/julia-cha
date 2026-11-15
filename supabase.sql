@@ -76,9 +76,14 @@ alter table public.reservas
 -- Vista pública: só diz QUAIS presentes estão reservados, nunca por quem.
 -- Usa DISTINCT porque um presente pode ter várias linhas (uma por pessoa
 -- do grupo), mas o público só precisa de saber se está reservado ou não.
+--
+-- security_invoker = false: a vista corre com as permissões do DONO da
+-- vista (postgres), contornando o RLS da tabela "reservas". Isto é
+-- essencial: se ficar security_invoker = true, a vista corre com as
+-- permissões do anon (que não tem policy de SELECT) e devolve vazio.
 -- ------------------------------------------------------------------
 drop view if exists public.reservas_publicas;
-create view public.reservas_publicas as
+create view public.reservas_publicas with (security_invoker = false) as
   select distinct presente_id from public.reservas;
 
 grant select on public.reservas_publicas to anon, authenticated;

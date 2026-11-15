@@ -64,7 +64,7 @@
     // Lê a vista pública: devolve apenas que presentes estão reservados,
     // nunca os nomes de quem reservou.
     const url = CFG.url + "/rest/v1/reservas_publicas?select=presente_id";
-    const resposta = await fetch(url, { headers: cabecalhos() });
+    const resposta = await fetch(url, { headers: cabecalhos(), cache: "no-store" });
     if (!resposta.ok) throw new Error("Não foi possível carregar as reservas.");
 
     const linhas = await resposta.json();
