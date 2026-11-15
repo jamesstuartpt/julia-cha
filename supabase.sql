@@ -87,16 +87,36 @@ create policy "qualquer convidado pode sugerir presente"
 
 
 -- ------------------------------------------------------------------
--- Tabela de presenças: uma linha por confirmação de presença.
--- O convidado escreve o nome (ou nomes) de quem vai ao chá.
+-- Tabela de presenças: UMA LINHA POR PESSOA.
+-- O convidado escreve o nome (ou nomes) de quem vai ao baby shower.
+-- O site separa os nomes automaticamente e insere uma linha por cada
+-- um, para que seja fácil contar quantas pessoas vêm.
 -- Estes nomes NUNCA são mostrados no site público (não há policy de
 -- SELECT), por isso só vocês os veem no painel do Supabase.
 -- ------------------------------------------------------------------
 create table if not exists public.presencas (
   id         uuid primary key default gen_random_uuid(),
-  nomes      text not null check (char_length(trim(nomes)) between 1 and 300),
+  nome       text not null check (char_length(trim(nome)) between 1 and 120),
   criado_em  timestamptz not null default now()
 );
+
+-- Migração: se a tabela já existir com a coluna antiga "nomes",
+-- renomeia para "nome" e ajusta a restrição. Seguro de correr.
+do $$
+begin
+  if exists (
+    select 1 from information_schema.columns
+    where table_schema = 'public'
+      and table_name = 'presencas'
+      and column_name = 'nomes'
+  ) then
+    alter table public.presencas rename column nomes to nome;
+    alter table public.presencas drop constraint if exists presencas_nomes_check;
+    alter table public.presencas
+      add constraint presencas_nome_check
+      check (char_length(trim(nome)) between 1 and 120);
+  end if;
+end $$;
 
 alter table public.presencas enable row level security;
 
@@ -106,7 +126,7 @@ create policy "qualquer convidado pode confirmar presenca"
   to anon
   with check (true);
 
--- Sem policy de SELECT nem de UPDATE/DELETE: o público apenas registra
+-- Sem policy de SELECT nem de UPDATE/DELETE: o público apenas regista
 -- a presença e nunca consegue ler ou alterar as confirmações dos outros.
 
 

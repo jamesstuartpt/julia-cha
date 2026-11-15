@@ -102,23 +102,44 @@
     estado.reservas[presenteId] = true;
   }
 
-  async function guardarPresenca(nomes) {
-    if (!ONLINE) {
-      const locais = JSON.parse(localStorage.getItem(CHAVE_PRESENCAS) || "[]");
-      locais.push({ nomes: nomes, criado_em: new Date().toISOString() });
-      localStorage.setItem(CHAVE_PRESENCAS, JSON.stringify(locais));
-      return;
+  // Separa o texto escrito no formulário em nomes individuais, para
+  // que cada pessoa fique numa linha própria no Supabase e seja fácil
+  // contar quantas pessoas vêm.
+  function separarNomes(texto) {
+    return texto
+      .split(/[\n,;]|\s+e\s+/i)
+      .map(function (n) { return n.trim().replace(/\s+/g, " "); })
+      .filter(function (n) { return n.length > 0 && n.length <= 120; });
+  }
+
+  async function guardarPresenca(texto) {
+    const nomes = separarNomes(texto);
+    if (!nomes.length) {
+      throw new Error("Escreve pelo menos um nome, por favor.");
     }
 
+    if (!ONLINE) {
+      const locais = JSON.parse(localStorage.getItem(CHAVE_PRESENCAS) || "[]");
+      nomes.forEach(function (n) {
+        locais.push({ nome: n, criado_em: new Date().toISOString() });
+      });
+      localStorage.setItem(CHAVE_PRESENCAS, JSON.stringify(locais));
+      return nomes.length;
+    }
+
+    // Insere uma linha por pessoa, num único pedido.
+    const corpo = nomes.map(function (n) { return { nome: n }; });
     const resposta = await fetch(CFG.url + "/rest/v1/presencas", {
       method: "POST",
       headers: cabecalhos({ Prefer: "return=minimal" }),
-      body: JSON.stringify({ nomes: nomes })
+      body: JSON.stringify(corpo)
     });
 
     if (!resposta.ok) {
       throw new Error("Não foi possível guardar a confirmação. Tenta novamente.");
     }
+
+    return nomes.length;
   }
 
   async function guardarSugestao(sugestao, nome) {
@@ -551,10 +572,10 @@
       botao.textContent = "A confirmar...";
 
       try {
-        await guardarPresenca(nomes);
+        const total = await guardarPresenca(nomes);
         form.reset();
         fecharModalPresenca();
-        mostrarToast("Obrigado! Já sabemos que vens.");
+        mostrarToast("Obrigado! Já sabemos que vêm " + total + " " + (total === 1 ? "pessoa." : "pessoas."));
       } catch (falha) {
         erro.textContent = falha.message;
       } finally {

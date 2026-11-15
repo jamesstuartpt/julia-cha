@@ -12,6 +12,6 @@
 ------------------------------------------------------------------ */
 
 window.SUPABASE_CONFIG = {
-  url: "",
-  anonKey: ""
+  url: "https://axtukcbjvkwicdzdzvlg.supabase.co",
+  anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF4dHVrY2Jqdmt3aWNkemR6dmxnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ2OTIzMTUsImV4cCI6MjExMDI2ODMxNX0.ga98cWEFn0EQN5NlE2esB7_EA7rWfWOi8g_oxYtC8uw"
 };
