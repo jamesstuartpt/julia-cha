@@ -74,27 +74,45 @@
   }
 
   async function guardarReserva(presenteId, nome, mensagem) {
+    // Separa os nomes (ex: "Ana, João e Maria") para cada pessoa ficar
+    // numa linha própria no Supabase, igual às presenças.
+    const nomes = separarNomes(nome);
+    if (!nomes.length) {
+      throw new Error("Escreve o teu nome, por favor.");
+    }
+
     if (!ONLINE) {
       const locais = JSON.parse(localStorage.getItem(CHAVE_LOCAL) || "{}");
-      locais[presenteId] = { nome: nome, mensagem: mensagem };
+      locais[presenteId] = { nomes: nomes, mensagem: mensagem };
       localStorage.setItem(CHAVE_LOCAL, JSON.stringify(locais));
       estado.reservas[presenteId] = true;
       return;
     }
 
+    // Verifica se o presente já foi reservado por outra pessoa.
+    const check = await fetch(
+      CFG.url + "/rest/v1/reservas_publicas?presente_id=eq." +
+      encodeURIComponent(presenteId) + "&select=presente_id",
+      { headers: cabecalhos() }
+    );
+    if (check.ok) {
+      const existentes = await check.json();
+      if (existentes.length > 0) {
+        throw new Error("Alguém acabou de reservar este presente. Escolhe outro da lista.");
+      }
+    }
+
+    // Insere uma linha por pessoa, no mesmo pedido.
+    const corpo = nomes.map(function (n) {
+      return { presente_id: presenteId, nome: n, mensagem: mensagem || null };
+    });
+
     const resposta = await fetch(CFG.url + "/rest/v1/reservas", {
       method: "POST",
       headers: cabecalhos({ Prefer: "return=minimal" }),
-      body: JSON.stringify({
-        presente_id: presenteId,
-        nome: nome,
-        mensagem: mensagem || null
-      })
+      body: JSON.stringify(corpo)
     });
 
-    if (resposta.status === 409) {
-      throw new Error("Alguém acabou de reservar este presente. Escolhe outro da lista.");
-    }
     if (!resposta.ok) {
       throw new Error("Não foi possível guardar a reserva. Tenta novamente.");
     }

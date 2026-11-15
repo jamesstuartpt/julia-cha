@@ -12,21 +12,22 @@
 
 
 -- ------------------------------------------------------------------
--- Tabela de reservas: uma linha por presente reservado.
--- O nome do presente vem do ficheiro presentes.json (não se repete aqui),
--- por isso pode editar a lista sem tocar na base de dados.
+-- Tabela de reservas: UMA LINHA POR PESSOA que participa na oferta
+-- de um presente. Se um grupo de 4 pessoas reservar o mesmo presente,
+-- são criadas 4 linhas (uma por pessoa), todas com o mesmo presente_id.
+-- O nome do presente vem do ficheiro presentes.json (não se repete aqui).
 -- ------------------------------------------------------------------
 create table if not exists public.reservas (
   id           uuid primary key default gen_random_uuid(),
   presente_id  text not null,
-  nome         text not null check (char_length(trim(nome)) between 1 and 40),
+  nome         text not null check (char_length(trim(nome)) between 1 and 120),
   mensagem     text check (char_length(mensagem) <= 200),
   criado_em    timestamptz not null default now()
 );
 
--- Um presente só pode ser reservado uma vez.
-create unique index if not exists reservas_presente_id_unico
-  on public.reservas (presente_id);
+-- NOTA: não existe índice único em presente_id. O presente pode aparecer
+-- em várias linhas (uma por pessoa do grupo). A verificação de "já está
+-- reservado" é feita pelo site antes de inserir.
 
 
 -- ------------------------------------------------------------------
@@ -55,13 +56,25 @@ create policy "qualquer convidado pode reservar"
 
 
 -- ------------------------------------------------------------------
+-- Migração: se já correrares uma versão anterior deste ficheiro,
+-- remove o índice único de presente_id e alarga o limite do nome
+-- (antes 40 caracteres, agora 120). Seguro de correr várias vezes.
+-- ------------------------------------------------------------------
+drop index if exists public.reservas_presente_id_unico;
+alter table public.reservas drop constraint if exists reservas_nome_check;
+alter table public.reservas
+  add constraint reservas_nome_check
+  check (char_length(trim(nome)) between 1 and 120);
+
+
+-- ------------------------------------------------------------------
 -- Vista pública: só diz QUAIS presentes estão reservados, nunca por quem.
--- Corre com as permissões do dono da tabela, por isso consegue ler as
--- linhas sem expor as colunas "nome" e "mensagem".
+-- Usa DISTINCT porque um presente pode ter várias linhas (uma por pessoa
+-- do grupo), mas o público só precisa de saber se está reservado ou não.
 -- ------------------------------------------------------------------
 drop view if exists public.reservas_publicas;
 create view public.reservas_publicas as
-  select presente_id from public.reservas;
+  select distinct presente_id from public.reservas;
 
 grant select on public.reservas_publicas to anon, authenticated;
 
