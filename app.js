@@ -259,7 +259,6 @@
   function categorias() {
     const lista = [];
     estado.catalogo.forEach(function (p) {
-      if (estado.reservas[p.id]) return;
       const cat = p.categoria || "Outros";
       if (lista.indexOf(cat) === -1) lista.push(cat);
     });
@@ -403,9 +402,9 @@
     const grelha = porId("grid");
     grelha.innerHTML = "";
 
+    // Os presentes reservados continuam na lista, mas com o selo "Reservado".
     const visiveis = estado.catalogo.filter(function (p) {
-      return !estado.reservas[p.id] &&
-        (estado.filtro === "Todas" || (p.categoria || "Outros") === estado.filtro);
+      return estado.filtro === "Todas" || (p.categoria || "Outros") === estado.filtro;
     });
 
     if (!visiveis.length) {
