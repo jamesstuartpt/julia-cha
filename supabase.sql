@@ -45,11 +45,15 @@ alter table public.reservas enable row level security;
 
 drop policy if exists "lista visivel para todos" on public.reservas;
 
-drop policy if exists "qualquer convidado pode reservar" on public.reservas;
-create policy "qualquer convidado pode reservar"
-  on public.reservas for insert
-  to anon
-  with check (true);
+-- A policy de INSERT abaixo foi retirada: a partir de agora as reservas
+-- só entram pela função RPC "reservar_presente" (definida no fim deste
+-- ficheiro), que é atómica e impede duplicados. Manter aqui o create
+-- policy abriria a tabela a INSERTs diretos.
+-- drop policy if exists "qualquer convidado pode reservar" on public.reservas;
+-- create policy "qualquer convidado pode reservar"
+--   on public.reservas for insert
+--   to anon
+--   with check (true);
 
 -- Nota: não existem policies de UPDATE nem DELETE para o anon,
 -- por isso essas operações são recusadas automaticamente.
@@ -141,6 +145,49 @@ create policy "qualquer convidado pode confirmar presenca"
 
 -- Sem policy de SELECT nem de UPDATE/DELETE: o público apenas regista
 -- a presença e nunca consegue ler ou alterar as confirmações dos outros.
+
+
+-- ------------------------------------------------------------------
+-- Reserva atómica de um presente.
+-- O site chama esta função (e não faz INSERT direto na tabela) para
+-- evitar que duas pessoas reservem o mesmo presente ao mesmo tempo.
+--
+-- Como funciona:
+--   1. Bloqueia o presente com pg_advisory_xact_lock (baseado no id),
+--      para que outra reserva do mesmo presente tenha de esperar.
+--   2. Verifica se o presente já tem reservas. Se sim, devolve false.
+--   3. Se não, insere uma linha por pessoa (um array de nomes) e
+--      devolve true.
+--
+-- security definer: a função corre com as permissões do dono da tabela,
+-- por isso consegue inserir mesmo que o anon não tenha policy de INSERT.
+-- set search_path = public: evita ambiguidades de schema.
+-- ------------------------------------------------------------------
+create or replace function public.reservar_presente(
+  p_presente_id text, p_nomes text[], p_mensagem text)
+returns boolean
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  perform pg_advisory_xact_lock(hashtext(p_presente_id));
+  if exists (select 1 from reservas where presente_id = p_presente_id) then
+    return false;
+  end if;
+  insert into reservas (presente_id, nome, mensagem)
+  select p_presente_id, n, p_mensagem from unnest(p_nomes) as n;
+  return true;
+end $$;
+
+-- Retira permissões de execução para o público e concede apenas ao anon.
+revoke all on function public.reservar_presente(text, text[], text) from public;
+grant execute on function public.reservar_presente(text, text[], text) to anon;
+
+-- Remove a policy de INSERT direto na tabela, se por acaso existir de
+-- uma versão anterior deste ficheiro. A partir de agora só se reserva
+-- pela função RPC acima.
+drop policy if exists "qualquer convidado pode reservar" on public.reservas;
 
 
 -- ------------------------------------------------------------------

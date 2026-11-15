@@ -20,6 +20,7 @@
       "descricao": "Vários tamanhos (T0 a T3).",
       "preco": "5,35 € / pacote",
       "link": "https://www.continente.pt/produto/fraldas-sensitive-t0-%3C3kg-dodot-6900182.html",
+      "imagem": "imagens/fraldas-dodot.png",
       "emoji": "🍼"
     },
     {
@@ -30,6 +31,7 @@
       "quantidade": 3,
       "preco": "2,97 €",
       "link": "https://wells.pt/resguardos-descartaveis-bebe-60x40-cm-7418099.html",
+      "imagem": "imagens/resguardos.jpg",
       "emoji": "🧴"
     },
     {
@@ -40,6 +42,7 @@
       "quantidade": 3,
       "preco": "2,99 €",
       "link": "https://wells.pt/compressas-bebe-tecido-nao-tecido-7422974.html",
+      "imagem": "imagens/compressas.png",
       "emoji": "🧴"
     },
     {
@@ -50,6 +53,7 @@
       "quantidade": 1,
       "preco": "47,99 €",
       "link": "https://wells.pt/contentor-para-fraldas-winter-cloud-8200166.html",
+      "imagem": "imagens/contentor-fraldas.jpg",
       "emoji": "🗑️"
     },
     {
@@ -60,6 +64,7 @@
       "quantidade": 2,
       "preco": "14,20 €",
       "link": "https://wells.pt/pack-pomada-para-a-muda-da-fralda-baby-7995053.html",
+      "imagem": "imagens/pomada-muda.png",
       "emoji": "🧴"
     },
     {
@@ -70,6 +75,7 @@
       "quantidade": 1,
       "preco": "9,59 €",
       "link": "https://wells.pt/primeiro-creme-muda-da-fralda-bebe-5257000.html",
+      "imagem": "imagens/creme-muda.png",
       "emoji": "🧴"
     },
     {
@@ -80,6 +86,7 @@
       "quantidade": 2,
       "preco": "11,43 €",
       "link": "https://wells.pt/pack-toalhitas-bebe-aqua-pure-0-plastico-7757308.html",
+      "imagem": "imagens/toalhitas-pack.jpg",
       "emoji": "🧴"
     },
     {
@@ -90,6 +97,7 @@
       "quantidade": 1,
       "preco": "74,99 €",
       "link": "https://www.kiabi.pt/cadeira-de-alimentacao-2-em-1-lionelo-beny-6-a-36-meses-ajustavel-conversivel-verde_P1165329C1165332",
+      "imagem": "imagens/cadeira-alimentacao.png",
       "emoji": "🪑"
     },
     {
@@ -100,6 +108,7 @@
       "quantidade": 1,
       "preco": "49,99 €",
       "link": "https://www.elcorteingles.pt/puericultura/A200292117-necessaire-de-bebe-11-pecas-curl-white/",
+      "imagem": "imagens/necessaire.png",
       "emoji": "🛁"
     },
     {
@@ -110,6 +119,7 @@
       "quantidade": 1,
       "preco": "14,22 €",
       "link": "https://wells.pt/pack-cleansing-water-baby-8404700.html",
+      "imagem": "imagens/cleansing-water.jpg",
       "emoji": "🧴"
     },
     {
@@ -120,6 +130,7 @@
       "quantidade": 1,
       "preco": "9,09 €",
       "link": "https://wells.pt/primeiro-champo-bebe-4963658.html",
+      "imagem": "imagens/primeiro-champo.jpg",
       "emoji": "🧴"
     },
     {
@@ -130,6 +141,7 @@
       "quantidade": 1,
       "preco": "16,07 €",
       "link": "https://wells.pt/primeiro-creme-lavante-bebe-4469389.html",
+      "imagem": "imagens/creme-lavante.jpg",
       "emoji": "🛁"
     },
     {
@@ -140,6 +152,7 @@
       "quantidade": 1,
       "preco": "11,62 €",
       "link": "https://wells.pt/agua-micelar-bio-7267540.html",
+      "imagem": "imagens/agua-micelar.png",
       "emoji": "🧴"
     },
     {
@@ -150,6 +163,7 @@
       "quantidade": 1,
       "preco": "19,99 €",
       "link": "https://zippyonline.com/pt/products/toalha-de-banho-com-capuz-meyco-80x80-cm-terry-sand",
+      "imagem": "imagens/toalha-capuz.png",
       "emoji": "🛁"
     },
     {
@@ -160,6 +174,7 @@
       "quantidade": 1,
       "preco": "16,99 €",
       "link": "https://www.elcorteingles.pt/puericultura/A51966165-capa-de-casa-de-banho-basica-lisa/",
+      "imagem": "imagens/capa-banho.png",
       "emoji": "🛁"
     },
     {
@@ -170,6 +185,7 @@
       "quantidade": 1,
       "preco": "37,95 €",
       "link": "https://molisandco.com/en/products/nido-para-bebe-winter-commelina",
+      "imagem": "imagens/babynest.png",
       "emoji": "🛏️"
     },
      {
@@ -180,6 +196,7 @@
       "quantidade": 1,
       "preco": "36,95 €",
       "link": "https://molisandco.com/en/products/saco-de-dormir-bebe-con-mangas-winter-commelina-tog-2-5",
+      "imagem": "imagens/saco-dormir.png",
       "emoji": "🌙"
     },
     {
@@ -190,6 +207,7 @@
       "quantidade": 1,
       "preco": "199,95 €",
       "link": "https://www.babycool.com/products/chicco-berco-cosleep-next2me-magic-des-taupe?variant=44608718668063&country=PT&currency=EUR&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&utm_source=google&utm_medium=cpc&utm_campaign=0524-p-sale-pm&gad_source=1&gad_campaignid=21337932214&gbraid=0AAAAADC8CrpK_Rz8vW9XNg-_cCP1huK2E&gclid=CjwKCAiAquDXBhApEiwAoyNqBLPmsPbfFimaovtUSW9tSKGH6VkCvPtDxcdp23QRnWa8APSX6m-jzxoCGkEQAvD_BwE",
+      "imagem": "imagens/berco.png",
       "emoji": "🛏️"
     },
     {
@@ -200,6 +218,7 @@
       "quantidade": 1,
       "preco": "19,99 €",
       "link": "https://www.zarahome.com/pt/manta-bebe-ondas-l44624004",
+      "imagem": "imagens/manta-bebe-ondas.png",
       "emoji": "🛏️"
     },
     {
@@ -210,6 +229,7 @@
       "quantidade": 1,
       "preco": "36,99 €",
       "link": "https://www.chicco.pt/produtos/dormir-e-relaxar/hora-de-dormir/conjuntos-de-cama/conjunto-lenc%C3%B3is-chicco-next2me-8051700581278-09101121350990.html",
+      "imagem": "imagens/lencois-chicco.png",
       "emoji": "🛏️"
     },
     {
@@ -220,6 +240,7 @@
       "quantidade": 3,
       "preco": "8,49 €",
       "link": "https://wells.pt/fralda-musselina-0m-8620139.html",
+      "imagem": "imagens/fralda-musselina.jpg",
       "emoji": "🌙"
     },
     {
@@ -230,6 +251,7 @@
       "quantidade": 1,
       "preco": "71,14 €",
       "link": "https://www.amazon.es/dp/B0DG2QS4GG/ref=sspa_dk_detail_0?pd_rd_i=B0BZYJWCMS&pd_rd_w=OlmDh&content-id=amzn1.sym.1a1cf43a-d009-48e1-8554-8b895fd31e09&pf_rd_p=1a1cf43a-d009-48e1-8554-8b895fd31e09&pf_rd_r=1X85R95BK158TRW2TCRZ&pd_rd_wg=j7Czz&pd_rd_r=dceebeec-d1a6-45b0-9de4-e4c288825d09&aref=7GlcoW4Ygq&sp_csd=d2lkZ2V0TmFtZT1zcF9kZXRhaWw&th=1",
+      "imagem": "imagens/camera.png",
       "emoji": "🎵"
     },
     {
@@ -240,6 +262,7 @@
       "quantidade": 1,
       "preco": "38,69 €",
       "link": "https://www.worten.pt/produtos/maquina-de-som-para-bebes-momcozy-maquina-de-ruido-branco-para-bebes-dormindo-com-controle-remoto-de-aplicativo-mrkean-0741157984453",
+      "imagem": "imagens/som-bebe.png",
       "emoji": "🎵"
     },
     {
@@ -250,6 +273,7 @@
       "quantidade": 1,
       "preco": "62,99 €",
       "link": "https://www.philips.pt/c-p/SCF359_00/2-in-1-warmer-sterilizer-premium",
+      "imagem": "imagens/sterilizer.png",
       "emoji": "🍼"
     },
      {
@@ -260,6 +284,7 @@
       "quantidade": 1,
       "preco": "45,99 €",
       "link": "https://www.elcorteingles.pt/puericultura/A49095114-conjunto-primeiros-comecos-natural-response-3-biberoes-e-escova/",
+      "imagem": "imagens/biberoes.png",
       "emoji": "🍼"
     },
     {
@@ -270,6 +295,7 @@
       "quantidade": 1,
       "preco": "24,99 €",
       "link": "https://wells.pt/almofada-amamentacao-7752883.html",
+      "imagem": "imagens/almofada-amamentacao.png",
       "emoji": "🤱"
     },
     {
@@ -280,6 +306,7 @@
       "quantidade": 1,
       "preco": "119.99 €",
       "link": "https://www.elcorteingles.pt/puericultura/A41361297-marsupio-mini-3d-mesh-2-posicoes/?color=Bege",
+      "imagem": "imagens/marsupio.png",
       "emoji": "🤱"
     }
   ]

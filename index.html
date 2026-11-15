@@ -5,6 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Júlia — Baby Shower</title>
   <meta name="description" content="Baby shower da Júlia. Escolhe e reserva o presente que gostarias de nos oferecer.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Júlia — Baby Shower">
+  <meta property="og:description" content="Escolhe e reserva o presente que gostarias de oferecer à Júlia.">
+  <meta property="og:image" content="https://jamesstuartpt.github.io/julia-cha/imagens/og.jpg">
+  <meta property="og:url" content="https://jamesstuartpt.github.io/julia-cha/">
+  <meta property="og:locale" content="pt_PT">
+  <!-- Para a pré-visualização no WhatsApp, coloca uma imagem em imagens/og.jpg
+       (1200x630 px, abaixo de 300 KB). NÃO uses a ecografia. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..600&family=Inter:wght@300..600&display=swap" rel="stylesheet">
@@ -95,7 +104,7 @@
 
       <form class="form" id="formReserva" novalidate>
         <label class="form__label" for="campoNome">De:</label>
-        <input class="form__input" id="campoNome" name="nome" type="text" maxlength="40"
+        <input class="form__input" id="campoNome" name="nome" type="text" maxlength="600"
                autocomplete="name" placeholder="Ex: Ana e família" required>
 
         <label class="form__label" for="campoMensagem">
@@ -144,7 +153,7 @@
         <label class="form__label" for="campoNomes">
           Nome ou nomes de quem vai: <span class="form__opt">(podes escrever vários)</span>
         </label>
-        <textarea class="form__input" id="campoNomes" name="nomes" rows="3" maxlength="300"
+        <textarea class="form__input" id="campoNomes" name="nomes" rows="3" maxlength="600"
                   placeholder="Ex: Ana Silva, João Silva e o Miguel (2 anos)"></textarea>
         <button class="btn btn--primary btn--full" id="btnPresenca" type="submit">Confirmar presença</button>
         <p class="form__error" id="presencaErro" role="alert"></p>

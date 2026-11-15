@@ -89,35 +89,22 @@
       return;
     }
 
-    // Verifica se o presente já foi reservado por outra pessoa.
-    const check = await fetch(
-      CFG.url + "/rest/v1/reservas_publicas?presente_id=eq." +
-      encodeURIComponent(presenteId) + "&select=presente_id",
-      { headers: cabecalhos() }
-    );
-    if (check.ok) {
-      const existentes = await check.json();
-      if (existentes.length > 0) {
-        throw new Error("Alguém acabou de reservar este presente. Escolhe outro da lista.");
-      }
-    }
-
-    // Insere uma linha por pessoa, no mesmo pedido.
-    const corpo = nomes.map(function (n) {
-      return { presente_id: presenteId, nome: n, mensagem: mensagem || null };
-    });
-
-    const resposta = await fetch(CFG.url + "/rest/v1/reservas", {
+    // Reserva atómica: a função RPC no Supabase bloqueia o presente e
+    // verifica se já está reservado, evitando duplicados mesmo que duas
+    // pessoas cliquem ao mesmo tempo. Devolve true se reservou, false
+    // se o presente já estava reservado.
+    const resposta = await fetch(CFG.url + "/rest/v1/rpc/reservar_presente", {
       method: "POST",
-      headers: cabecalhos({ Prefer: "return=minimal" }),
-      body: JSON.stringify(corpo)
+      headers: cabecalhos(),
+      body: JSON.stringify({ p_presente_id: presenteId, p_nomes: nomes, p_mensagem: mensagem || null })
     });
-
-    if (!resposta.ok) {
-      throw new Error("Não foi possível guardar a reserva. Tenta novamente.");
-    }
+    if (!resposta.ok) throw new Error("Não foi possível guardar a reserva. Tenta novamente.");
 
     estado.reservas[presenteId] = true;
+    if (!(await resposta.json())) {
+      desenharLista();
+      throw new Error("Alguém acabou de reservar este presente. Escolhe outro da lista.");
+    }
   }
 
   // Separa o texto escrito no formulário em nomes individuais, para
@@ -251,6 +238,8 @@
 
     function desenhar() {
       const restante = fim - new Date();
+
+      if (restante <= -86400000) { caixa.hidden = true; clearInterval(relogio); return; }
 
       if (restante <= 0) {
         caixa.innerHTML = "";
@@ -665,6 +654,16 @@
       await carregarReservas();
     } catch (falha) {
       console.warn(falha.message);
+      if (ONLINE) {
+        const grelha = porId("grid");
+        grelha.innerHTML = "";
+        const aviso = document.createElement("p");
+        aviso.className = "empty";
+        aviso.textContent = "De momento não conseguimos ver as reservas. Volta a tentar daqui a pouco, ou fala connosco por WhatsApp.";
+        grelha.appendChild(aviso);
+        desenharFiltros();
+        return;
+      }
     }
 
     desenharFiltros();
