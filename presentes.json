@@ -101,6 +101,17 @@
       "emoji": "🪑"
     },
     {
+      "id": "kit-banho-muda-twistshake",
+      "nome": "Kit Banho e Muda Twistshake Mocha",
+      "categoria": "Banho",
+      "descricao": "Inclui suporte para banheira, banheira com rede de apoio, enxaguador, 6 brinquedos de banho e muda-fraldas. Cor: mocha. Sem BPA, PVC e ftalatos.",
+      "quantidade": 1,
+      "preco": "164,99 €",
+      "link": "https://twistshake.com/eu/p/luxury-changing-mat-mocha",
+      "imagem": "imagens/kit-banho-muda-twistshake.jpg",
+      "emoji": "🛁"
+    },
+    {
       "id": "necessaire",
       "nome": "Nécessaire de Bebé 11 Peças",
       "categoria": "Banho",
