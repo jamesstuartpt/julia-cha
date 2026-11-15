@@ -117,7 +117,7 @@
       .filter(function (n) { return n.length > 0 && n.length <= 120; });
   }
 
-  async function guardarPresenca(texto) {
+  async function guardarPresenca(texto, restricao) {
     const nomes = separarNomes(texto);
     if (!nomes.length) {
       throw new Error("Escreve pelo menos um nome, por favor.");
@@ -126,14 +126,17 @@
     if (!ONLINE) {
       const locais = JSON.parse(localStorage.getItem(CHAVE_PRESENCAS) || "[]");
       nomes.forEach(function (n) {
-        locais.push({ nome: n, criado_em: new Date().toISOString() });
+        locais.push({ nome: n, restricao: restricao || null, criado_em: new Date().toISOString() });
       });
       localStorage.setItem(CHAVE_PRESENCAS, JSON.stringify(locais));
       return nomes.length;
     }
 
-    // Insere uma linha por pessoa, num único pedido.
-    const corpo = nomes.map(function (n) { return { nome: n }; });
+    // Insere uma linha por pessoa, num único pedido. A restrição
+    // alimentar é a mesma para todas as pessoas do grupo.
+    const corpo = nomes.map(function (n) {
+      return { nome: n, restricao: restricao || null };
+    });
     const resposta = await fetch(CFG.url + "/rest/v1/presencas", {
       method: "POST",
       headers: cabecalhos({ Prefer: "return=minimal" }),
@@ -172,9 +175,17 @@
 
   /* =========================== UTILIDADES =========================== */
 
+  // O campo dataCha pode incluir o dia da semana ("2026-12-12 - Sábado"),
+  // por isso extraímos só a parte YYYY-MM-DD antes de a converter.
+  function soData(texto) {
+    const m = String(texto || "").match(/^\d{4}-\d{2}-\d{2}/);
+    return m ? m[0] : "";
+  }
+
   function formatarData(iso) {
-    if (!iso) return "";
-    const d = new Date(iso + "T00:00:00");
+    const data = soData(iso);
+    if (!data) return "";
+    const d = new Date(data + "T00:00:00");
     if (isNaN(d)) return "";
     return d.toLocaleDateString("pt-PT", { day: "numeric", month: "long", year: "numeric" });
   }
@@ -229,7 +240,7 @@
   }
 
   function iniciarContagem() {
-    const alvo = estado.config.dataCha || estado.config.dataParto;
+    const alvo = soData(estado.config.dataCha) || soData(estado.config.dataParto);
     const caixa = porId("countdown");
     if (!alvo) { caixa.hidden = true; return; }
 
@@ -457,6 +468,19 @@
     porId("modalPresente").textContent = presente.nome + (presente.preco ? " · " + presente.preco : "");
     porId("formReserva").reset();
     porId("formErro").textContent = "";
+
+    // Botão de WhatsApp com o nome do presente, para resolver enganos.
+    const numero = String(estado.config.whatsapp || "").replace(/\D/g, "");
+    const botaoWpp = porId("btnWhatsappReserva");
+    if (numero) {
+      const mensagem = "Olá! Reservei por engano o seguinte presente no site do baby shower: " +
+        presente.nome + ". Podem, por favor, cancelar? Obrigado.";
+      botaoWpp.href = "https://wa.me/" + numero + "?text=" + encodeURIComponent(mensagem);
+      botaoWpp.hidden = false;
+    } else {
+      botaoWpp.hidden = true;
+    }
+
     porId("modal").hidden = false;
     document.body.style.overflow = "hidden";
     setTimeout(function () { porId("campoNome").focus(); }, 60);
@@ -484,6 +508,7 @@
   function abrirModalPresenca() {
     porId("formPresenca").reset();
     porId("presencaErro").textContent = "";
+    porId("campoRestricao").hidden = true;
     porId("modalPresenca").hidden = false;
     document.body.style.overflow = "hidden";
     setTimeout(function () { porId("campoNomes").focus(); }, 60);
@@ -560,6 +585,16 @@
     const form = porId("formPresenca");
     if (!form) return;
 
+    // Mostra o campo de restrição alimentar só quando a pessoa escolhe "Sim".
+    form.querySelectorAll('input[name="restricao"]').forEach(function (radio) {
+      radio.addEventListener("change", function () {
+        porId("campoRestricao").hidden = (radio.value !== "sim");
+        if (radio.value === "sim") {
+          porId("campoRestricao").focus();
+        }
+      });
+    });
+
     form.addEventListener("submit", async function (evento) {
       evento.preventDefault();
 
@@ -567,6 +602,11 @@
       const nomes = campo.value.trim();
       const erro = porId("presencaErro");
       const botao = porId("btnPresenca");
+
+      // Restrição alimentar: só envia se a pessoa tiver escolhido "Sim"
+      // e preenchido o campo.
+      const temRestricao = form.querySelector('input[name="restricao"]:checked').value === "sim";
+      const restricaoTexto = temRestricao ? porId("campoRestricao").value.trim() : "";
 
       if (!nomes) {
         erro.textContent = "Escreve o teu nome, ou os nomes de quem vem contigo.";
@@ -579,8 +619,9 @@
       botao.textContent = "A confirmar...";
 
       try {
-        const total = await guardarPresenca(nomes);
+        const total = await guardarPresenca(nomes, restricaoTexto);
         form.reset();
+        porId("campoRestricao").hidden = true;
         fecharModalPresenca();
         mostrarToast("Obrigado! Já sabemos que vêm " + total + " " + (total === 1 ? "pessoa." : "pessoas."));
       } catch (falha) {

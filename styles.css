@@ -495,6 +495,26 @@ img { max-width: 100%; display: block; }
 
 .form__opt { color: var(--muted); font-weight: 400; }
 
+/* Grupo de opções (ex: restrição alimentar Sim/Não) */
+.form__radio {
+  margin: 12px 0 0;
+  padding: 0;
+  border: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form__option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: .95rem;
+}
+
+.form__option input { cursor: pointer; }
+
 .form__input {
   width: 100%;
   padding: 13px 15px;

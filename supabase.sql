@@ -135,6 +135,20 @@ begin
   end if;
 end $$;
 
+-- Migração: adiciona a coluna de restrição alimentar, se ainda não existir.
+-- Seguro de correr várias vezes.
+do $$
+begin
+  if not exists (
+    select 1 from information_schema.columns
+    where table_schema = 'public'
+      and table_name = 'presencas'
+      and column_name = 'restricao'
+  ) then
+    alter table public.presencas add column restricao text;
+  end if;
+end $$;
+
 alter table public.presencas enable row level security;
 
 drop policy if exists "qualquer convidado pode confirmar presenca" on public.presencas;

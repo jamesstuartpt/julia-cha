@@ -117,6 +117,7 @@
         <p class="form__nota">Reservaste por engano? Fala connosco pelo WhatsApp que nós resolvemos.</p>
 
         <button class="btn btn--primary btn--full" id="btnConfirmar" type="submit">Confirmar reserva</button>
+        <a class="btn btn--outline btn--full" id="btnWhatsappReserva" target="_blank" rel="noopener">Falar connosco no WhatsApp</a>
         <p class="form__error" id="formErro" role="alert"></p>
       </form>
     </div>
@@ -155,6 +156,19 @@
         </label>
         <textarea class="form__input" id="campoNomes" name="nomes" rows="3" maxlength="600"
                   placeholder="Ex: Ana Silva, João Silva e o Miguel (2 anos)"></textarea>
+
+        <fieldset class="form__radio">
+          <legend class="form__label">Alguma restrição alimentar?</legend>
+          <label class="form__option">
+            <input type="radio" name="restricao" value="nao" checked> Não
+          </label>
+          <label class="form__option">
+            <input type="radio" name="restricao" value="sim"> Sim
+          </label>
+        </fieldset>
+        <input class="form__input" id="campoRestricao" name="restricaoTexto" type="text" maxlength="200"
+               placeholder="Quais? (ex: alergia a frutos secos, vegetariano...)" hidden>
+
         <button class="btn btn--primary btn--full" id="btnPresenca" type="submit">Confirmar presença</button>
         <p class="form__error" id="presencaErro" role="alert"></p>
       </form>
