@@ -455,6 +455,11 @@ img { max-width: 100%; display: block; }
   position: relative;
   width: 100%;
   max-width: 460px;
+  max-height: 90vh;
+  max-height: 90dvh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
   margin: 0 auto;
   padding: 26px 22px 28px;
   background: var(--bg);
