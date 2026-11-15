@@ -103,6 +103,13 @@
       <p class="modal__loja">Este é o artigo que escolhemos, mas podem encontrá-lo noutras lojas. Fiquem à vontade para pesquisar e comparar preços! 🩷</p>
 
       <form class="form" id="formReserva" novalidate>
+        <div class="form__qtd" id="blocoQtd" hidden>
+          <label class="form__label" for="campoQtd">Quantas unidades queres oferecer?</label>
+          <input class="form__input" id="campoQtd" name="quantidade" type="number"
+                 min="1" step="1" value="1" inputmode="numeric">
+          <p class="form__hint" id="qtdAjuda"></p>
+        </div>
+
         <label class="form__label" for="campoNome">De:</label>
         <input class="form__input" id="campoNome" name="nome" type="text" maxlength="600"
                autocomplete="name" placeholder="Ex: Ana e família" required>
@@ -113,8 +120,24 @@
         <textarea class="form__input" id="campoMensagem" name="mensagem" rows="3" maxlength="200"
                   placeholder="Um desejo, um conselho, um miminho..."></textarea>
 
-        <p class="form__nota">O teu nome não é exibido no site. Só nós é que o vemos; os outros convidados não veem quem reservou.</p>
-        <p class="form__nota">Reservaste por engano? Fala connosco pelo WhatsApp que nós resolvemos.</p>
+        <fieldset class="form__radio">
+          <legend class="form__label">Vens ao baby shower?</legend>
+          <label class="form__option">
+            <input type="radio" name="vem" value="nao" checked> Não
+          </label>
+          <label class="form__option">
+            <input type="radio" name="vem" value="sim"> Sim
+          </label>
+        </fieldset>
+        <div class="form__nomes" id="blocoNomesReserva" hidden>
+          <label class="form__label" for="campoNomesReserva">
+            Nome ou nomes de quem vai: <span class="form__opt">(podes escrever vários)</span>
+          </label>
+          <textarea class="form__input" id="campoNomesReserva" name="nomes" rows="3" maxlength="600"
+                    placeholder="Ex: Ana Silva, João Silva e o Miguel (2 anos)"></textarea>
+        </div>
+
+        <p class="form__nota">O teu nome não aparece no site — só nós o vemos. Reservaste por engano? Fala connosco pelo WhatsApp.</p>
 
         <button class="btn btn--primary btn--full" id="btnConfirmar" type="submit">Confirmar reserva</button>
         <a class="btn btn--outline btn--full" id="btnWhatsappReserva" target="_blank" rel="noopener">Falar connosco no WhatsApp</a>

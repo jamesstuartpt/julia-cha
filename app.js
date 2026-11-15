@@ -19,7 +19,7 @@
   const estado = {
     config: {},
     catalogo: [],
-    reservas: {},   // { idDoPresente: true } — só saber se está reservado, nunca por quem
+    reservas: {},   // { idDoPresente: nºDeUnidadesReservadas } — nunca por quem
     filtro: "Todas"
   };
 
@@ -35,10 +35,11 @@
     estado.config = dados.config || {};
     estado.catalogo = dados.presentes || [];
 
-    // Presentes já reservados antes de existir base de dados
+    // Presentes já reservados antes de existir base de dados (ficam
+    // com todas as unidades tomadas).
     estado.catalogo.forEach((p) => {
-      if (p.reservado && p.reservadoPor) {
-        estado.reservas[p.id] = true;
+      if (p.reservado) {
+        estado.reservas[p.id] = p.quantidade > 1 ? p.quantidade : 1;
       }
     });
   }
@@ -54,16 +55,20 @@
   async function carregarReservas() {
     if (!ONLINE) {
       try {
-        Object.assign(estado.reservas, JSON.parse(localStorage.getItem(CHAVE_LOCAL) || "{}"));
+        const locais = JSON.parse(localStorage.getItem(CHAVE_LOCAL) || "{}");
+        Object.keys(locais).forEach(function (id) {
+          const r = locais[id];
+          estado.reservas[id] = (r && r.quantidade) ? r.quantidade : 1;
+        });
       } catch (e) {
         console.warn("Reservas locais ilegíveis, a começar do zero.");
       }
       return;
     }
 
-    // Lê a lista de presentes reservados através de uma função RPC.
-    // A função é "security definer", por isso contorna o RLS e devolve
-    // apenas os presente_id (nunca os nomes de quem reservou).
+    // Lê, por presente, quantas unidades já estão reservadas através de
+    // uma função RPC. A função é "security definer", por isso contorna o
+    // RLS e devolve apenas presente_id + quantidade (nunca quem reservou).
     const resposta = await fetch(CFG.url + "/rest/v1/rpc/get_reservas_publicas", {
       method: "POST",
       headers: cabecalhos(),
@@ -73,43 +78,70 @@
 
     const linhas = await resposta.json();
     linhas.forEach(function (linha) {
-      estado.reservas[linha.presente_id] = true;
+      estado.reservas[linha.presente_id] = Number(linha.quantidade) || 1;
     });
   }
 
-  async function guardarReserva(presenteId, nome, mensagem) {
-    // As reservas ficam numa única linha por presente, com todos os nomes
-    // juntos (ex: "Ana, João e Maria"). Ao contrário das presenças, aqui
-    // não precisamos de contar pessoas, por isso não separamos os nomes.
+  // Quantas unidades ainda faltam reservar de um presente.
+  function totalDoPresente(presente) {
+    return presente.quantidade > 1 ? presente.quantidade : 1;
+  }
+
+  function reservadoDe(presente) {
+    const total = totalDoPresente(presente);
+    return Math.min(estado.reservas[presente.id] || 0, total);
+  }
+
+  async function guardarReserva(presenteId, nome, mensagem, quantidade, total) {
+    // Cada reserva fica numa linha própria, com a quantidade de unidades
+    // escolhida e todos os nomes do grupo juntos (ex: "Ana, João e Maria").
     const nomeLimpo = nome.trim();
     if (!nomeLimpo) {
       throw new Error("Escreve o teu nome, por favor.");
     }
 
+    const qtd = Math.max(1, Math.floor(Number(quantidade) || 1));
+    const totalUnid = Math.max(1, Math.floor(Number(total) || 1));
+    const jaReservado = estado.reservas[presenteId] || 0;
+    const restam = totalUnid - jaReservado;
+
+    if (qtd > restam) {
+      throw new Error("Só restam " + restam + (restam === 1 ? " unidade." : " unidades."));
+    }
+
     if (!ONLINE) {
       const locais = JSON.parse(localStorage.getItem(CHAVE_LOCAL) || "{}");
-      locais[presenteId] = { nome: nomeLimpo, mensagem: mensagem };
+      locais[presenteId] = { nome: nomeLimpo, mensagem: mensagem, quantidade: jaReservado + qtd };
       localStorage.setItem(CHAVE_LOCAL, JSON.stringify(locais));
-      estado.reservas[presenteId] = true;
-      return;
+      estado.reservas[presenteId] = jaReservado + qtd;
+      return jaReservado + qtd;
     }
 
     // Reserva atómica: a função RPC no Supabase bloqueia o presente e
-    // verifica se já está reservado, evitando duplicados mesmo que duas
-    // pessoas cliquem ao mesmo tempo. Devolve true se reservou, false
-    // se o presente já estava reservado.
+    // soma as unidades já reservadas antes de aceitar, evitando que duas
+    // pessoas fiquem com as mesmas unidades. Devolve o total de unidades
+    // reservadas após a inserção, ou -1 se já não houver unidades.
     const resposta = await fetch(CFG.url + "/rest/v1/rpc/reservar_presente", {
       method: "POST",
       headers: cabecalhos(),
-      body: JSON.stringify({ p_presente_id: presenteId, p_nome: nomeLimpo, p_mensagem: mensagem || null })
+      body: JSON.stringify({
+        p_presente_id: presenteId,
+        p_nome: nomeLimpo,
+        p_mensagem: mensagem || null,
+        p_quantidade: qtd,
+        p_total: totalUnid
+      })
     });
     if (!resposta.ok) throw new Error("Não foi possível guardar a reserva. Tenta novamente.");
 
-    estado.reservas[presenteId] = true;
-    if (!(await resposta.json())) {
+    const reservadoAgora = await resposta.json();
+    if (!reservadoAgora || reservadoAgora < 0) {
       desenharLista();
-      throw new Error("Alguém acabou de reservar este presente. Escolhe outro da lista.");
+      throw new Error("Alguém acabou de reservar as últimas unidades. Escolhe outro da lista.");
     }
+
+    estado.reservas[presenteId] = reservadoAgora;
+    return reservadoAgora;
   }
 
   // Separa o texto escrito no formulário em nomes individuais, para
@@ -338,10 +370,14 @@
   }
 
   function criarCartao(presente) {
-    const reserva = estado.reservas[presente.id];
+    const total = totalDoPresente(presente);
+    const reservado = reservadoDe(presente);
+    const restam = total - reservado;
+    // Só fica "esgotado" quando todas as unidades já foram reservadas.
+    const esgotado = restam <= 0;
 
     const cartao = document.createElement("article");
-    cartao.className = "card" + (reserva ? " card--taken" : "");
+    cartao.className = "card" + (esgotado ? " card--taken" : "");
 
     const arte = document.createElement("div");
     arte.className = "card__art card__art--foto";
@@ -394,10 +430,21 @@
       corpo.appendChild(desc);
     }
 
-    if (presente.quantidade > 1) {
+    // Presentes com várias unidades mostram o progresso (ex: "1/10"),
+    // para se ver que ainda há unidades livres para reservar.
+    if (total > 1) {
+      const barra = document.createElement("div");
+      barra.className = "card__progress";
+      const cheio = document.createElement("span");
+      cheio.className = "card__progress-fill";
+      cheio.style.width = Math.round((reservado / total) * 100) + "%";
+      barra.appendChild(cheio);
+      corpo.appendChild(barra);
+
       const qtd = document.createElement("p");
       qtd.className = "card__qty";
-      qtd.textContent = "Sugestão: " + presente.quantidade + " unidades";
+      qtd.textContent = reservado + "/" + total + " unidades" +
+        (restam > 0 ? " · restam " + restam : " · esgotado");
       corpo.appendChild(qtd);
     }
 
@@ -421,7 +468,7 @@
     const pe = document.createElement("div");
     pe.className = "card__foot";
 
-    if (reserva) {
+    if (esgotado) {
       const estadoTxt = document.createElement("span");
       estadoTxt.className = "card__status";
       // Nunca mostramos quem reservou: o site é público.
@@ -473,6 +520,22 @@
     porId("modalPresente").textContent = presente.nome + (presente.preco ? " · " + presente.preco : "");
     porId("formReserva").reset();
     porId("formErro").textContent = "";
+    porId("blocoNomesReserva").hidden = true;
+
+    // Se o presente tiver várias unidades, mostra o campo de quantidade
+    // com o máximo de unidades ainda disponíveis.
+    const total = totalDoPresente(presente);
+    const restam = total - reservadoDe(presente);
+    const bloco = porId("blocoQtd");
+    if (total > 1) {
+      bloco.hidden = false;
+      const campoQtd = porId("campoQtd");
+      campoQtd.max = String(Math.max(restam, 1));
+      campoQtd.value = "1";
+      porId("qtdAjuda").textContent = "Restam " + restam + " de " + total + " unidades disponíveis.";
+    } else {
+      bloco.hidden = true;
+    }
 
     // Botão de WhatsApp com o nome do presente, para resolver enganos.
     const numero = String(estado.config.whatsapp || "").replace(/\D/g, "");
@@ -548,6 +611,14 @@
       if (!porId("modalPresenca").hidden) fecharModalPresenca();
     });
 
+    // Mostra o campo de nomes só quando a pessoa indica que vem ao baby shower.
+    porId("formReserva").querySelectorAll('input[name="vem"]').forEach(function (radio) {
+      radio.addEventListener("change", function () {
+        porId("blocoNomesReserva").hidden = (radio.value !== "sim");
+        if (radio.value === "sim") porId("campoNomesReserva").focus();
+      });
+    });
+
     porId("formReserva").addEventListener("submit", async function (evento) {
       evento.preventDefault();
 
@@ -565,16 +636,65 @@
         return;
       }
 
+      // Quantidade de unidades a reservar (1 unidade nos presentes únicos).
+      const total = totalDoPresente(presenteEmCurso);
+      const restam = total - reservadoDe(presenteEmCurso);
+      const qtd = porId("blocoQtd").hidden ? 1 : Math.floor(Number(porId("campoQtd").value));
+
+      if (!(qtd >= 1)) {
+        erro.textContent = "Escolhe quantas unidades queres oferecer.";
+        porId("campoQtd").focus();
+        return;
+      }
+      if (qtd > restam) {
+        erro.textContent = "Só restam " + restam + (restam === 1 ? " unidade." : " unidades.");
+        porId("campoQtd").focus();
+        return;
+      }
+
+      // Vem ao baby shower? Se sim, os nomes de quem vem são obrigatórios.
+      const vem = porId("formReserva").querySelector('input[name="vem"]:checked').value === "sim";
+      const nomes = vem ? porId("campoNomesReserva").value.trim() : "";
+      if (vem && !nomes) {
+        erro.textContent = "Escreve o teu nome, ou os nomes de quem vem contigo.";
+        porId("campoNomesReserva").focus();
+        return;
+      }
+
       erro.textContent = "";
       botao.disabled = true;
       botao.textContent = "A reservar...";
 
       try {
-        await guardarReserva(presenteEmCurso.id, nome, mensagem);
+        await guardarReserva(presenteEmCurso.id, nome, mensagem, qtd, total);
         const nomeGuardado = nome;
+
+        // A presença é registada a seguir à reserva; se falhar, não
+        // invalidamos a reserva (a pessoa pode confirmar pelo botão próprio).
+        let confirmados = 0;
+        let falhaPresenca = false;
+        if (vem) {
+          try {
+            confirmados = await guardarPresenca(nomes, "");
+          } catch (e) {
+            falhaPresenca = true;
+            console.warn(e);
+          }
+        }
+
+        let textoToast = "Obrigado, " + nomeGuardado + "! O presente está reservado.";
+        if (total > 1) {
+          textoToast += " Reservaste " + qtd + (qtd === 1 ? " unidade." : " unidades.");
+        }
+        if (vem) {
+          textoToast += falhaPresenca
+            ? " (Confirma a tua presença no botão próprio, por favor.)"
+            : " Já sabemos que vêm " + confirmados + (confirmados === 1 ? " pessoa." : " pessoas.");
+        }
+
         fecharModal();
         desenharLista();
-        mostrarToast("Obrigado, " + nomeGuardado + "! O presente está reservado.");
+        mostrarToast(textoToast);
       } catch (falha) {
         erro.textContent = falha.message;
       } finally {

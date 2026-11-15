@@ -337,6 +337,24 @@ img { max-width: 100%; display: block; }
 
 .card__qty { margin: 8px 0 0; font-size: .8rem; color: var(--muted); }
 
+/* Barra de progresso das reservas de presentes com várias unidades. */
+.card__progress {
+  margin: 12px 0 0;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--lav-100);
+  overflow: hidden;
+}
+
+.card__progress-fill {
+  display: block;
+  height: 100%;
+  background: var(--lav-500);
+  transition: width .3s ease;
+}
+
+.card--taken .card__progress-fill { background: var(--ok); }
+
 .card__price {
   margin: 10px 0 0;
   font-size: .9rem;
@@ -494,6 +512,11 @@ img { max-width: 100%; display: block; }
 .form__label { font-size: .84rem; font-weight: 500; margin-top: 8px; }
 
 .form__opt { color: var(--muted); font-weight: 400; }
+
+/* Campo de quantidade de unidades (presentes com várias unidades). */
+.form__qtd { display: grid; gap: 6px; }
+.form__qtd .form__input { max-width: 140px; }
+.form__hint { margin: 0; font-size: .8rem; color: var(--muted); }
 
 /* Grupo de opções (ex: restrição alimentar Sim/Não) */
 .form__radio {
