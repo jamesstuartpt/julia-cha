@@ -653,7 +653,11 @@
       }
 
       // Vem ao baby shower? Se sim, os nomes de quem vem são obrigatórios.
-      const vem = porId("formReserva").querySelector('input[name="vem"]:checked').value === "sim";
+      // Quem escolhe "Já confirmei" já registou a presença antes, por isso
+      // não lhe voltamos a pedir os nomes nem a registar de novo.
+      const escolha = porId("formReserva").querySelector('input[name="vem"]:checked').value;
+      const vem = escolha === "sim";
+      const jaConfirmou = escolha === "ja";
       const nomes = vem ? porId("campoNomesReserva").value.trim() : "";
       if (vem && !nomes) {
         erro.textContent = "Escreve o teu nome, ou os nomes de quem vem contigo.";
@@ -690,6 +694,8 @@
           textoToast += falhaPresenca
             ? " (Confirma a tua presença no botão próprio, por favor.)"
             : " Já sabemos que vêm " + confirmados + (confirmados === 1 ? " pessoa." : " pessoas.");
+        } else if (jaConfirmou) {
+          textoToast += " Já tínhamos a tua confirmação de presença.";
         }
 
         fecharModal();
